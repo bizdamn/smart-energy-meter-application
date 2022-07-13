@@ -8,7 +8,7 @@ const onePhaseSchema = new mongoose.Schema(
     dg: { type: Number, required: true },
     RelayState: { type: String, required: true },
     eb_dg_Status: { type: Number, required: true },
-    timestamp: { type: Date, required: true },
+    // timestamp: { type: Date, required: true }
   }
 );
 

@@ -7,43 +7,14 @@ import db from "../utils/db";
 import Layout from "../Layout/Layout"
 import { useSnackbar } from 'notistack';
 import axios from 'axios'
-// var _ = require("lodash");
 export default function DevicesList({ devices }) {
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  // const [Devices, setDevices] = useState({
-  //   totalCount: null,
-  //   result: null,
-  // });
 
-  // useEffect(() => {
-  //   // POST request using fetch with set headers
-  //   const requestOptions = {
-  //     method: "GET",
-  //     headers: {
-  //       "Grpc-Metadata-Authorization":
-  //         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiZjYwMGZlNTItZTEwNi00MzNiLTllZmYtMmMyMTM0YWFlZjFmIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTY1NTAyOTI5OCwic3ViIjoiYXBpX2tleSJ9.yB2Tok8PtYJwASWcjszQ0WuPk0-kScpZIUujgWsS8Ns",
-  //     },
-  //   };
-  //   fetch(
-  //     `https://chirpstack.igscsi4server.com/api/devices?limit=100000&applicationID=${process.env.NEXT_PUBLIC_CHIRPSTACK_APPLICATION_ID}`,
-  //     requestOptions,
-  //   )
-  //     .then((response) => response.json())
-  //     .then((data) =>
-  //       setDevices({ result: data.result, totalCount: data.totalCount }),
-  //     ).catch(function (error) {
-  //       alert('Please Check your internet connection. Either their is no internet connection or the signals are weak');
-  //     });
-  // }, []);
-
-  // var array = _.toArray(Devices.result);
 
   async function setDeviceName(devEUI, devName) {
     closeSnackbar();
-
     try {
-
       const { data } = await axios.put('/api/set-device-name', {
         devName: devName,
         devEUI: devEUI
@@ -52,7 +23,6 @@ export default function DevicesList({ devices }) {
     } catch (err) {
       enqueueSnackbar(err, { variant: 'error' });
     }
-
   }
 
   return (
@@ -62,8 +32,6 @@ export default function DevicesList({ devices }) {
         container
         spacing={0}
         direction="column"
-        alignItems="center"
-        justifyContent="center"
         style={{ overflowX: 'scroll' }}
       >
         <table className="table table-striped  table-hover">
@@ -87,14 +55,15 @@ export default function DevicesList({ devices }) {
                 <>
                    {/* One Phase Meters */}
                   {element.realName.substring(0, 3) == '1p_' ? (<>
-                    <tr key={element.devEUI}>
-                      <td>
+                    <tr  key={element.devEUI}>
+                      <td >
                         <Link href={`/device-info/one-phase/${element.devEUI}`} style={{ color: 'black' }}><a>
                           {element.devEUI}
                         </a></Link>
                       </td>
-                      <td>
+                      <td style={{padding:'5px' }} >
                         <TextField
+                         size="small"
                           defaultValue={element.devName}
                           onBlur={(e) => {
                             setDeviceName(element.devEUI, e.target.value);
@@ -105,7 +74,7 @@ export default function DevicesList({ devices }) {
                           variant="outlined"
                         />
                       </td>
-                      <td>
+                      <td >
                         <Link href={`/device-info/one-phase/${element.devEUI}`} style={{ color: 'black' }}><a>
                           One Phase
                         </a></Link>
@@ -123,8 +92,9 @@ export default function DevicesList({ devices }) {
                         </a></Link>
                       </td>
 
-                      <td>
+                      <td style={{padding:'5px' }} >
                         <TextField
+                         size="small"
                           defaultValue={element.devName}
                           onBlur={(e) => {
                             setDeviceName(element.devEUI, e.target.value);
@@ -152,8 +122,9 @@ export default function DevicesList({ devices }) {
                           {element.devEUI}
                         </a></Link>
                       </td>
-                      <td>
+                      <td style={{padding:'5px' }} >
                         <TextField
+                         size="small"
                           defaultValue={element.devName}
                           onBlur={(e) => {
                             setDeviceName(element.devEUI, e.target.value);
@@ -174,7 +145,7 @@ export default function DevicesList({ devices }) {
                   </>) : null}
 
                   {/* Schneider Electric Meters */}
-                  {element.realName.substring(0, 3) == 'schneider_' ? (<>
+                  {element.realName.substring(0, 3) == 'sch' ? (<>
                     <tr key={element.devEUI}>
                       <td>
                         <Link href={`/device-info/schneider/${element.devEUI}`} style={{ color: 'black' }}><a>
@@ -195,7 +166,7 @@ export default function DevicesList({ devices }) {
                       </td>
                       <td>
                         <Link href={`/device-info/schneider/${element.devEUI}`} style={{ color: 'black' }}><a>
-                          Temperature Humidity Meter
+                        Schneider
                         </a></Link>
                       </td>
 

@@ -6,7 +6,7 @@ import { LayoutProvider } from "../utils/LayoutContext";
 import Themes from "../themes";
 import Head from 'next/head';
 import { DataStoreProvider } from '../utils/DataStore';
-
+import "../node_modules/react-quill/dist/quill.snow.css";
 
 export default function MyApp({ Component, pageProps }) {
   useEffect(() => {

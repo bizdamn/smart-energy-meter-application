@@ -3,8 +3,9 @@ import Grid from "@mui/material/Grid";
 import moment from "moment";
 import OnePhase01 from "../../../models/OnePhase01";
 import OnePhase02 from "../../../models/OnePhase02";
-import OnePhase03 from "../../../models/OnePhase03";
+// import OnePhase03 from "../../../models/OnePhase03";
 import Organisation from "../../../models/Organisation";
+import Devices from "../../../models/Devices";
 import db from "../../../utils/db";
 import { ResponsiveContainer } from "recharts";
 import { Bar } from "react-chartjs-2";
@@ -24,23 +25,16 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-import PaidIcon from "@mui/icons-material/Paid";
-import BrightnessHighIcon from "@mui/icons-material/BrightnessHigh";
-import BoltIcon from "@mui/icons-material/Bolt";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import BatteryChargingFullIcon from "@mui/icons-material/BatteryChargingFull";
-import PowerIcon from "@mui/icons-material/Power";
-import AcUnitIcon from "@mui/icons-material/AcUnit";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useRouter } from "next/router";
 export default function DevicePage({
   command01,
   command02,
-  command03,
+  // command03,
   organisation,
+  device,
 }) {
+
   const router = useRouter();
   const { id } = router.query;
   const { state } = useContext(DataStore);
@@ -79,7 +73,7 @@ export default function DevicePage({
   async function chartDataFilter() {
     closeSnackbar();
     try {
-      const { data } = await axios.post(`http://127.0.0.1:5000/one-phase`,
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_Chart_API_Python_Link}/one-phase`,
         {
           start_date: startDate,
           end_date: endDate,
@@ -537,144 +531,206 @@ export default function DevicePage({
     <Layout>
 
       {/* Heading */}
-      <Grid style={{ backgroundColor: "#9d2eff", color: "white" }}>
+      <Grid style={{ backgroundColor: "#9d2eff", color: "white",borderRadius:'5rem' }}>
         <Typography sx={{ mb: 3 }} variant="h3" align="center">
-          Zone Name
+          {device.devName}
         </Typography>
       </Grid>
 
+      <Stack direction="row">
+        <Stack sx={{ width: "100%" }} direction="row">
+          <DatePickerComponent
+
+            startDate={startDate}
+            SetStartDate={SetStartDate}
+            endDate={endDate}
+            SetEndDate={SetEndDate}
+          />
+          <Button onClick={() => chartDataFilter()} endIcon={<FilterAltIcon />}
+            style={{ backgroundColor: '#FF5C93',borderRadius:'1rem' , color: 'white', marginTop: '1rem', marginBottom: '1rem', padding: '0.7rem' }} >
+          <b>  Click To Filter</b>
+          </Button>
+
+        </Stack>
+      </Stack>
+
       {/* Last Readings */}
-      <Grid sx={{ my: 3 }}>
-        <Grid item>
-          <Stack direction="row">
-            <Stack sx={{ width: "100%" }} direction="row">
-              <DatePickerComponent
-                startDate={startDate}
-                SetStartDate={SetStartDate}
-                endDate={endDate}
-                SetEndDate={SetEndDate}
-              />
-              <Box>
-                <Button onClick={() => chartDataFilter()} variant="outlined">
-                  Filter
-                </Button>
-              </Box>
-            </Stack>
-          </Stack>
+      <Grid style={{ marginTop: -20 }} container spacing={1} >
+        <Grid item lg={2} xs={6} >
+          <List>
+            <ListItem style={{ backgroundColor: "#D3D3D3" }}>
+              <ListItemButton component="a" href="#total-cost">
+                <ListItemText
+                  primary={`Total Cost (₹)`}
+                />
+              </ListItemButton>
+            </ListItem>
 
-          <Grid container spacing={2}>
-            <Grid item lg={4} xs={12}>
-              <List>
-                <ListItem style={{ backgroundColor: "#D3D3D3" }}>
-                  <ListItemButton component="a" href="#total-cost">
-                    <ListItemText
-                      primary={`Total Cost:  ₹ ${parseFloat(
-                        command01[0]?.eb * organisation[0].per_Unit_Cost
-                      ).toFixed(2)}`}
-                    />
-                  </ListItemButton>
-                </ListItem>
-               
-                <Divider />
-                <ListItem style={{ backgroundColor: "#D3D3D3" }}>
-                  <ListItemButton component="a" href="#kwh">
-                    <ListItemText
-                      primary={`Total KWh Units Used: ${parseFloat(
-                        command01[0]?.eb
-                      ).toFixed(2)}`}
-                    />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-                <ListItem style={{ backgroundColor: "#D3D3D3" }}>
-                  <ListItemButton component="a" href="#kw">
-                    <ListItemText
-                      primary={`Total KW Load Used: ${parseFloat(
-                        command02[0]?.kW_Load
-                      ).toFixed(2)}`}
-                    />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
+            <Divider />
+            <ListItem style={{ backgroundColor: "#D3D3D3" }}>
+              <ListItemButton component="a" href="#kwh">
+                <ListItemText
+                  primary={`KWh Units Used`}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem style={{ backgroundColor: "#D3D3D3" }}>
+              <ListItemButton component="a" href="#kw">
+                <ListItemText
+                  primary={`KW Load Used`}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
 
-                <ListItem style={{ backgroundColor: "#D3D3D3" }}>
-                  <ListItemButton component="a" href="#kva">
-                    <ListItemText
-                      primary={`Total KVA Units Used: ${parseFloat(
-                        command02[0]?.kVA_Load
-                      ).toFixed(2)}`}
-                    />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-              </List>
-            </Grid>
+            <ListItem style={{ backgroundColor: "#D3D3D3" }}>
+              <ListItemButton component="a" href="#kva">
+                <ListItemText
+                  primary={`KVA Units Used`}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+          </List>
+        </Grid>
+        <Grid item lg={2} xs={6}>
+          <List>
+            <ListItem style={{ backgroundColor: "#EEEEEE" }}>
+              <ListItemButton component="a" href="#total-cost">
+                <ListItemText
+                  primary={`: ${parseFloat(
+                    command01[0]?.eb * organisation.perUnitCost
+                  ).toFixed(2)}`}
+                />
+              </ListItemButton>
+            </ListItem>
 
-            <Grid item lg={4} xs={12}>
-              <List>
-               
-                <ListItem style={{ backgroundColor: "#D3D3D3" }}>
-                  <ListItemButton component="a" href="#power-factor">
-                    <ListItemText
-                      primary={`Power Factor: ${parseFloat(
-                        command02[0]?.power_factor
-                      ).toFixed(2)}`}
-                    />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-                <ListItem style={{ backgroundColor: "#D3D3D3" }}>
-                  <ListItemButton component="a" href="#voltage">
-                    <ListItemText
-                      primary={`Last Voltage Reading: ${parseFloat(
-                        command02[0]?.voltage
-                      ).toFixed(2)}`}
-                    />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-                <ListItem style={{ backgroundColor: "#D3D3D3" }}>
-                  <ListItemButton component="a" href="#frequency">
-                    <ListItemText
-                      primary={`Last Frequency Reading: ${parseFloat(
-                        command02[0]?.frequency
-                      ).toFixed(2)}`}
-                    />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-                <ListItem style={{ backgroundColor: "#D3D3D3" }}>
-                  <ListItemButton component="a" href="#current">
-                    <ListItemText
-                      primary={`Last Current Reading: ${parseFloat(
-                        command02[0]?.current
-                      ).toFixed(2)}`}
-                    />
-                  </ListItemButton>
-                </ListItem>
-                {/* <Divider />
-                <ListItem style={{ backgroundColor: "#D3D3D3" }}>
-                  <ListItemButton component="a" href="#dg">
-                    <ListItemText
-                      primary={`DG Last Reading: ${parseFloat(
-                        command01[0]?.dg
-                      ).toFixed(2)}`}
-                    />
-                  </ListItemButton>
-                </ListItem> */}
-              </List>
-            </Grid>
-            <Grid item lg={4} xs={12}>
-              <DeviceInfo deviceEUI={id} />
-            </Grid>
-          </Grid>
+            <Divider />
+            <ListItem style={{ backgroundColor: "#EEEEEE" }}>
+              <ListItemButton component="a" href="#kwh">
+                <ListItemText
+                  primary={`: ${parseFloat(
+                    command01[0]?.eb
+                  ).toFixed(2)}`}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem style={{ backgroundColor: "#EEEEEE" }}>
+              <ListItemButton component="a" href="#kw">
+                <ListItemText
+                  primary={`: ${parseFloat(
+                    command02[0]?.kW_Load
+                  ).toFixed(2)}`}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+
+            <ListItem style={{ backgroundColor: "#EEEEEE" }}>
+              <ListItemButton component="a" href="#kva">
+                <ListItemText
+                  primary={`: ${parseFloat(
+                    command02[0]?.kVA_Load
+                  ).toFixed(2)}`}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+          </List>
+        </Grid>
+
+        <Grid item lg={2} xs={6}>
+          <List>
+            <ListItem style={{ backgroundColor: "#D3D3D3" }}>
+              <ListItemButton component="a" href="#power-factor">
+                <ListItemText
+                  primary={`Power Factor`}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem style={{ backgroundColor: "#D3D3D3" }}>
+              <ListItemButton component="a" href="#voltage">
+                <ListItemText
+                  primary={`Voltage Reading`}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem style={{ backgroundColor: "#D3D3D3" }}>
+              <ListItemButton component="a" href="#frequency">
+                <ListItemText
+                  primary={`Frequency Reading`}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem style={{ backgroundColor: "#D3D3D3" }}>
+              <ListItemButton component="a" href="#current">
+                <ListItemText
+                  primary={`Current Reading`}
+                />
+              </ListItemButton>
+            </ListItem>
+
+          </List>
+        </Grid>
+        <Grid item lg={2} xs={6}>
+          <List>
+            <ListItem style={{ backgroundColor: "#EEEEEE" }}>
+              <ListItemButton component="a" href="#power-factor">
+                <ListItemText
+                  primary={`: ${parseFloat(
+                    command02[0]?.power_factor
+                  ).toFixed(2)}`}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem style={{ backgroundColor: "#EEEEEE" }}>
+              <ListItemButton component="a" href="#voltage">
+                <ListItemText
+                  primary={`: ${parseFloat(
+                    command02[0]?.voltage
+                  ).toFixed(2)}`}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem style={{ backgroundColor: "#EEEEEE" }}>
+              <ListItemButton component="a" href="#frequency">
+                <ListItemText
+                  primary={`: ${parseFloat(
+                    command02[0]?.frequency
+                  ).toFixed(2)}`}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem style={{ backgroundColor: "#EEEEEE" }}>
+              <ListItemButton component="a" href="#current">
+                <ListItemText
+                  primary={`: ${parseFloat(
+                    command02[0]?.current
+                  ).toFixed(2)}`}
+                />
+              </ListItemButton>
+            </ListItem>
+
+          </List>
+        </Grid>
+        <Grid style={{ paddingTop: '1rem' }} item lg={4} xs={12}>
+          <DeviceInfo deviceEUI={id} />
         </Grid>
       </Grid>
 
 
 
-     {/* Charts */}
-      <Grid container spacing={4}>
+
+      {/* Charts */}
+      <Grid style={{ marginTop: 0 }} container spacing={4}>
         <Grid
           style={{ border: "2px solid #9013FE", borderRadius: "1rem" }}
           className="p-0"
@@ -697,7 +753,7 @@ export default function DevicePage({
               >
                 <h5>Total Cost</h5>
               </div>
-              <Line height={350} data={Costdata} />
+              <Line data={Costdata} />
             </>
           </ResponsiveContainer>
         </Grid>
@@ -724,7 +780,7 @@ export default function DevicePage({
               >
                 <h5>Energy Trend(KWh)</h5>
               </div>
-              <Line height={350} data={EB_KWHdata} />
+              <Line height={150} data={EB_KWHdata} />
             </>
           </ResponsiveContainer>
         </Grid>
@@ -750,7 +806,7 @@ export default function DevicePage({
               >
                 <h5>KW Load Trend</h5>
               </div>
-              <Line height={350} data={KWLoaddata} />
+              <Line height={150} data={KWLoaddata} />
             </>
           </ResponsiveContainer>
         </Grid>
@@ -776,7 +832,7 @@ export default function DevicePage({
               >
                 <h5>KVA Load Trend</h5>
               </div>
-              <Line height={350} data={KVALoaddata} />
+              <Line height={150} data={KVALoaddata} />
             </>
           </ResponsiveContainer>
         </Grid>
@@ -803,7 +859,7 @@ export default function DevicePage({
               >
                 <h5>DG</h5>
               </div>
-              <Bar height={350} data={DG_KWHdata} />
+              <Bar height={150} data={DG_KWHdata} />
             </>
           </ResponsiveContainer>
         </Grid>
@@ -830,7 +886,7 @@ export default function DevicePage({
               >
                 <h5>Power Factor</h5>
               </div>
-              <Line height={350} data={PowerFactordata} />
+              <Line height={150} data={PowerFactordata} />
             </>
           </ResponsiveContainer>
         </Grid>
@@ -856,7 +912,7 @@ export default function DevicePage({
               >
                 <h5>Voltage Trend</h5>
               </div>
-              <Line height={350} data={Voltagedata} />
+              <Line height={150} data={Voltagedata} />
             </>
           </ResponsiveContainer>
         </Grid>
@@ -882,7 +938,7 @@ export default function DevicePage({
               >
                 <h5>Frequency Trend</h5>
               </div>
-              <Line height={350} data={Frequencydata} />
+              <Line height={150} data={Frequencydata} />
             </>
           </ResponsiveContainer>
         </Grid>
@@ -909,7 +965,7 @@ export default function DevicePage({
               >
                 <h5>Daily Current Trend</h5>
               </div>
-              <Line height={350} data={Currentdata} />
+              <Line height={150} data={Currentdata} />
             </>
           </ResponsiveContainer>
         </Grid>
@@ -928,17 +984,19 @@ export async function getServerSideProps(ctx) {
   const command02 = await OnePhase02.find({ devEUI: id })
     .sort({ timestamp: -1 })
     .lean();
-  const command03 = await OnePhase03.find({ devEUI: id })
-    .sort({ timestamp: -1 })
-    .lean();
+  // const command03 = await OnePhase03.find({ devEUI: id })
+  //   .sort({ timestamp: -1 })
+  //   .lean();
   const organisation = await Organisation.find().lean();
+  const device = await Devices.find({ devEUI: id }).lean();
   await db.disconnect();
   return {
     props: {
       command01: command01.map(db.convertDocToObj),
       command02: command02.map(db.convertDocToObj),
-      command03: command03.map(db.convertDocToObj),
-      organisation: organisation.map(db.convertDocToObj),
+      // command03: command03.map(db.convertDocToObj),
+      organisation: organisation.map(db.convertDocToObj)[0],
+      device: device.map(db.convertDocToObj)[0],
     },
   };
 }

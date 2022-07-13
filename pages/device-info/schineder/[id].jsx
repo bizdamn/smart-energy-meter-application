@@ -79,7 +79,7 @@ export default function DevicePage({
   async function chartDataFilter() {
     closeSnackbar();
     try {
-      const { data } = await axios.post(`http://127.0.0.1:5000/one-phase`,
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_Chart_API_Python_Link}/one-phase`,
         {
           start_date: startDate,
           end_date: endDate,
@@ -537,7 +537,7 @@ export default function DevicePage({
     <Layout>
 
       {/* Heading */}
-      <Grid style={{ backgroundColor: "#9d2eff", color: "white" }}>
+      <Grid style={{ backgroundColor: "#9d2eff", color: "white",borderRadius:'5rem' }}>
         <Typography sx={{ mb: 3 }} variant="h3" align="center">
           Zone Name
         </Typography>
@@ -569,7 +569,7 @@ export default function DevicePage({
                   <ListItemButton component="a" href="#total-cost">
                     <ListItemText
                       primary={`Total Cost:  ₹ ${parseFloat(
-                        command01[0]?.eb * organisation[0].per_Unit_Cost
+                        command01[0]?.eb * organisation[0].perUnitCost
                       ).toFixed(2)}`}
                     />
                   </ListItemButton>

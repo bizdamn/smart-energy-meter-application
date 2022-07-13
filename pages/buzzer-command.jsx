@@ -123,7 +123,7 @@ export default function Payload() {
             }),
         };
         fetch(
-            `https://chirpstack.igscsi4server.com/api/devices/${process.env.NEXT_PUBLIC_Buzzer_DevEUI}/queue`,
+            `${process.env.NEXT_PUBLIC_CHIRPSTACK_URL}/api/devices/${process.env.NEXT_PUBLIC_Buzzer_DevEUI}/queue`,
             requestOptions
         )
             .then((response) => response.json())
@@ -172,7 +172,7 @@ export default function Payload() {
             }),
         };
         fetch(
-            `https://chirpstack.igscsi4server.com/api/devices/${process.env.NEXT_PUBLIC_Buzzer_DevEUI}/queue`,
+            `${process.env.NEXT_PUBLIC_CHIRPSTACK_URL}/api/devices/${process.env.NEXT_PUBLIC_Buzzer_DevEUI}/queue`,
             requestOptions
         )
             .then((response) => response.json())
@@ -220,7 +220,7 @@ export default function Payload() {
             }),
         };
         fetch(
-            `https://chirpstack.igscsi4server.com/api/devices/${process.env.NEXT_PUBLIC_Buzzer_DevEUI}/queue`,
+            `${process.env.NEXT_PUBLIC_CHIRPSTACK_URL}/api/devices/${process.env.NEXT_PUBLIC_Buzzer_DevEUI}/queue`,
             requestOptions
         )
             .then((response) => response.json())

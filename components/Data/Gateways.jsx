@@ -14,10 +14,10 @@ export default function Gateways() {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Grpc-Metadata-Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiZjYwMGZlNTItZTEwNi00MzNiLTllZmYtMmMyMTM0YWFlZjFmIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTY1NTAyOTI5OCwic3ViIjoiYXBpX2tleSJ9.yB2Tok8PtYJwASWcjszQ0WuPk0-kScpZIUujgWsS8Ns'
+        'Grpc-Metadata-Authorization': 'Bearer'+' '+process.env.NEXT_PUBLIC_CHIRPSTACK_API_KEY_SECRET
       },
     };
-    fetch(`https://chirpstack.igscsi4server.com/api/gateways?limit=10000&organizationID=${process.env.NEXT_PUBLIC_CHIRPSTACK_ORGANISATION_ID}`, requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_CHIRPSTACK_URL}/api/gateways?limit=10000&organizationID=${process.env.NEXT_PUBLIC_CHIRPSTACK_ORGANISATION_ID}`, requestOptions)
       .then(response => response.json())
       .then(data => setGateways({ result: data.result, totalCount: data.totalCount })).catch(function (error) {
         alert('Please Check your internet connection. Either their is no internet connection or the signals are weak');

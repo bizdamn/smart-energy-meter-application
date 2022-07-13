@@ -41,7 +41,7 @@ const structure = [
     ],
   },
   { id: 5, label: "Give Payload", link: "/buzzer-command", icon: <TouchAppSharpIcon /> },
-  { id: 5, label: "Relay", link: "/lora-relay", icon: < MouseIcon /> },
+  { id: 5, label: "Relay", link: "/relay", icon: < MouseIcon /> },
   { id: 8, type: "divider" },
 
 ];

@@ -25,11 +25,11 @@ export default function DeviceInfo(props) {
       headers: {
         Accept: "application/json",
         "Grpc-Metadata-Authorization":
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiZjYwMGZlNTItZTEwNi00MzNiLTllZmYtMmMyMTM0YWFlZjFmIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTY1NTAyOTI5OCwic3ViIjoiYXBpX2tleSJ9.yB2Tok8PtYJwASWcjszQ0WuPk0-kScpZIUujgWsS8Ns",
+        'Bearer'+' '+process.env.NEXT_PUBLIC_CHIRPSTACK_API_KEY_SECRET,
       },
     };
     fetch(
-      `https://chirpstack.igscsi4server.com/api/devices/${props.deviceEUI}`,
+      `${process.env.NEXT_PUBLIC_CHIRPSTACK_URL}/api/devices/${props.deviceEUI}`,
       requestOptions,
     )
       .then((response) => response.json())
@@ -67,18 +67,25 @@ export default function DeviceInfo(props) {
         alignItems="center"
         justifyContent="center"
       >
-        <Paper  sx={{padding:3}}>
+        <Paper  >
        <table className="table table-striped  table-hover">
-       <thead >
+     
+       {/* <thead >
             <tr>
               <th>Parameter</th>
               <th>Value</th>
             </tr>
-          </thead>
+          </thead> */}
           <tbody>
+           
             <tr>
               <td><b>Device EUI</b></td>
               <td>{DeviceInfo.devEUI}</td>
+            </tr>
+           
+            <tr>
+              <td><b>Real Name</b></td>
+              <td>{DeviceInfo.name}</td>
             </tr>
            
             <tr>

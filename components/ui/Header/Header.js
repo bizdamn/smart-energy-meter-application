@@ -115,18 +115,7 @@ export default function Header(props) {
                 <Image width={125} height={70} src="/logo.svg" alt="Client Logo" />
               </IconButton>
             </Box>
-            <Box sx={{ display: { xs: 'block', sm: 'block', md: 'none', lg: 'none' }, padding: 0, margin: 0 }}>
-              <IconButton
-                aria-haspopup="true"
-                color="inherit"
-                className={classes.headerMenuButton}
-                aria-controls="profile-menu"
-                onClick={e => setProfileMenu(e.currentTarget)}
-              >
-                <Image width={'100rem'} height={'70rem'} src="/logo.svg" alt="Client Logo" />
-              </IconButton>
-            </Box>
-
+        
 
           </Grid>
         </Grid>
@@ -142,16 +131,18 @@ export default function Header(props) {
           disableAutoFocusItem
         >
           <div className={classes.profileMenuUser}>
+          <Typography variant="h5" weight="bold" color='primary'>
+               {userInfo?.isSuperAdmin ? (<Link  href="/admin"><a> Go To Admin Panel</a></Link>) : (<></>)}
+            </Typography>
             <Typography variant="p" weight="medium">
               {userInfo ? (
                 <>Name: &nbsp;&nbsp;  {userInfo.name}</>
               ) : (<></>)}
             </Typography>
             <Typography variant="p" weight="medium">
-              {userInfo ? (
-                <>Role: &nbsp;&nbsp;  {userInfo.isAdmin ? (<>Admin</>) : (<>User</>)}</>
-              ) : (<></>)}
+                <>Role: &nbsp;&nbsp;  {userInfo?.isAdmin? (userInfo?.isSuperAdmin?(<>Super Admin</>):null) : (<>User</>)}</>
             </Typography>
+         
 
           </div>
           <div className={classes.profileMenuUser}>

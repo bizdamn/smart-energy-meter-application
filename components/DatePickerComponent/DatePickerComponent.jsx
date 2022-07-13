@@ -20,6 +20,7 @@ export default function DatePickerComponent({ startDate, SetStartDate, endDate, 
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box m={2}>
         <DatePicker
+        
           label="Choose a date"
           views={["year", "month", "day"]}
           format="DD-MM-YYYY"

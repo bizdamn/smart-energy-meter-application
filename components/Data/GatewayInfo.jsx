@@ -18,10 +18,10 @@ export default function GatewayInfo(props) {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Grpc-Metadata-Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiZjYwMGZlNTItZTEwNi00MzNiLTllZmYtMmMyMTM0YWFlZjFmIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTY1NTAyOTI5OCwic3ViIjoiYXBpX2tleSJ9.yB2Tok8PtYJwASWcjszQ0WuPk0-kScpZIUujgWsS8Ns'
+        'Grpc-Metadata-Authorization': 'Bearer'+' '+process.env.NEXT_PUBLIC_CHIRPSTACK_API_KEY_SECRET
       },
     };
-    fetch(`https://chirpstack.igscsi4server.com/api/gateways/${props.gatewayID}`, requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_CHIRPSTACK_URL}/api/gateways/${props.gatewayID}`, requestOptions)
       .then(response => response.json())
       .then(data => setGatewayInfo({
         name: data.gateway.name,

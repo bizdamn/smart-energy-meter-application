@@ -1,6 +1,6 @@
 import nc from 'next-connect';
 import bcrypt from 'bcryptjs';
-import User from '../../../models/User';
+import Users from '../../../models/Users';
 import db from '../../../utils/db';
 import { signToken } from '../../../utils/auth';
 
@@ -8,7 +8,7 @@ const handler = nc();
 
 handler.post(async (req, res) => {
   await db.connect();
-  const user = await User.findOne({ name: req.body.name });
+  const user = await Users.findOne({ name: req.body.name });
   await db.disconnect();
 
   if (user && bcrypt.compareSync(req.body.password, user.password)) {

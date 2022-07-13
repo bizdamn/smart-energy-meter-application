@@ -5,8 +5,10 @@ const organisationSchema = new mongoose.Schema(
     name: { type: String, required: true },
     tagline: { type: String, required: true },
     logo: { type: String, required: true },
-    FF01_I05_status: { type: Boolean, required: true },
-    FF01_I04_status: { type: Boolean, required: true }
+    mainMeterEUI: { type: String, required: true },
+    perUnitCost: { type: Number, required: true },
+    // FF01_I05_status: { type: Boolean, required: true },
+    // FF01_I04_status: { type: Boolean, required: true }
   }
 );
 

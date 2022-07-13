@@ -1,6 +1,6 @@
 import nc from 'next-connect';
 import bcrypt from 'bcryptjs';
-import User from '../../../models/User';
+import Users from '../../../models/Users';
 import db from '../../../utils/db';
 import { signToken, isAuth } from '../../../utils/auth';
 
@@ -9,7 +9,7 @@ handler.use(isAuth);
 
 handler.put(async (req, res) => {
   await db.connect();
-  const user = await User.findById(req.user._id);
+  const user = await Users.findById(req.user._id);
   user.name = req.body.name;
   user.email = req.body.email;
   user.password = req.body.password
